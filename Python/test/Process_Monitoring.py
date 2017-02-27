@@ -2,6 +2,7 @@
 
 from time import *
 import psutil
+import threading
 import logging
 
 Host_result={'cpu_info':{},'memory_info':{},'io_info':{},'net_info':{}}
@@ -73,7 +74,7 @@ def Process_info(pid):
 
 def Process_monitor_add():
     pids_add_initialization=[]
-    for i in psutil.pids()
+    for i in psutil.pids():
         pids_add_initialization.append(i)
 
     while True:
@@ -89,6 +90,7 @@ def Process_monitor_add():
                     continue
                 else:
                     #Process_Data_Send()
+                    print Process_result[str(pid_now)]
                     pass
 
 
@@ -99,17 +101,18 @@ def Process_monitor_remove():
         pids_remove_initialization.append(y)
 
     while True:
-        sleep(1800)
+        #sleep(1800)
         pids_now=psutil.pids()
-        for pid_initialization in pid_r_initialization:
+        for pid_initialization in pids_remove_initialization:
             if pid_initialization in pids_now:
                 continue
             elif pid_initialization not in pids_now:
-                Process_Death_reminder(pid_initialization)
-                pids_r_initialization.remove(pid_initialization)
+                #Process_Death_reminder(pid_initialization)
+                pids_remove_initialization.remove(pid_initialization)
+                print pid_initialization
 
 
-def Process_Data_Send()
+def Process_Data_Send():
     global Process_result
 
 #def Process_Death_reminder(pid_initialization):
@@ -226,4 +229,7 @@ def Host_info():
 
 
 if __name__ == '__main__':
-    Process_monitor_add()
+    threading.Thread(target=Process_monitor_add).start()
+    threading.Thread(target=Process_monitor_remove).start()
+
+    print '123123'
