@@ -21,7 +21,7 @@ for ip_list in ip_address:
 def Scan_target():
     global scan_target_queue
     targe_ip=scan_target_queue.get()
-    ans,uans=sr(IP(dst=targe_ip)/UDP90/DNS())
+    ans,uans=sr(IP(dst=targe_ip)/UDP()/DNS())
 
 
 def reflectivity_ddos():
