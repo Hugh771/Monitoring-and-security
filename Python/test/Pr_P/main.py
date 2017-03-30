@@ -39,7 +39,8 @@ def cook(pkt):
                 if ip_info not in target_host_list:
                     print 'append'
                     target_host_list.append(ip_info)
-        #target_host.put((pkt[IP].src, pkt[TCP].sport))
+        if (pkt[IP].src, pkt[TCP].sport) not in target_host_list:
+            target_host_list.append((pkt[IP].src, pkt[TCP].sport))
         for t_h in target_host_list:
             target_host.put(t_h)
 
@@ -71,6 +72,7 @@ def main():
     Current_path=os.getcwd()
     try:
         sys.path.append(Current_path+'/modules')
+        sys.path.append(Current_path+'/configuration')
     except:
         print 'import Error!'
         sys.exit(0)
@@ -104,7 +106,7 @@ def main():
 
             while True:
                 try:
-                    I_want_threads=int(raw_input('Please enter the number of threads you wang:'))
+                    I_want_threads=int(raw_input('Please enter the number of threads you want:'))
                 except:
                     print 'Please note that your input can only enter numbers!'
                 else:
