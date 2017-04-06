@@ -18,7 +18,7 @@ def scan(target_host,search_results):
         if target_info[1] != 23:
             target_host.put(target_info)
             continue
-        telnetlib.
+        telnetlib.Telnet()
 
 
 
