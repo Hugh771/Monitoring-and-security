@@ -30,6 +30,8 @@ while True:
             elif '--udp' in data_command or '-U' in data_command:
                 data_command = data_command.split()
 
+            elif '--cc' in data_command or '-C' in data_command:
+                data_command=data_command.split()
 
         except:
             continue
