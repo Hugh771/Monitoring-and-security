@@ -18,7 +18,10 @@ def scan(target_host,search_results):
         if target_info[1] != 23:
             target_host.put(target_info)
             continue
-        telnetlib.Telnet()
+        try:
+            tn=telnetlib.Telnet(host=target_info[0],port=target_info[1],timeout=5)
+
+
 
 
 
