@@ -43,7 +43,6 @@ def DNS_Reflectivity(hosts_list,target):
             continue
 
 
-
 def main():
     parser=OptionParser()
     parser.add_option('-t',action='store',type='string',dest='target_net_list')
