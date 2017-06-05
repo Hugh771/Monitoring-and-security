@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import urllib
 import random
 
+
 def spider():
     num=0
     for i in range(0,30):
