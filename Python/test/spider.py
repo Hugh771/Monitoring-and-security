@@ -16,7 +16,6 @@ def spider():
             num+=1
             spidef_img(img.attrs['src'],num)
 
-
 def spidef_img(url_img,img_num):
     if not url_img.startswith('http:'):
         url_img='http:'+url_img
