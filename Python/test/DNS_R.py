@@ -10,7 +10,7 @@ import netaddr
 
 def nmap_scan(targets):
     n=nmap.PortScanner()
-    n.scan(hosts=targets,ports='53',arguments='-n --open')
+    n.scan(hosts=targets,ports='53',arguments='-n --open -Pn -sU')
     if n.all_hosts() ==[]:
         print 'no 53 port!!!!'
         return False
