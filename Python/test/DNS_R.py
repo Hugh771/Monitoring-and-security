@@ -8,6 +8,7 @@ import sys
 import netaddr
 
 
+
 def nmap_scan(targets):
     n=nmap.PortScanner()
     n.scan(hosts=targets,ports='53',arguments='-n --open -Pn -sU')
@@ -41,6 +42,7 @@ def DNS_Reflectivity(hosts_list,target):
                 ans,uans=sr(IP(dst=host,src=target)/UDP()/DNS(qd=DNSQR(qname='yahoo.com.',qtype='ALL')),timeout=0.1)
         except:
             continue
+
 
 
 def main():
