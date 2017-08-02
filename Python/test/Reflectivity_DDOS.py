@@ -7,8 +7,8 @@ import sys
 from scapy.all import *
 
 ip_address=[]
-for argv in len(sys.argv):
-    if ip == 0:
+for argv in range(len(sys.argv)):
+    if argv == 0:
         continue
     ip_address.append(netaddr.IPNetwork(sys.argv[argv]))
 
