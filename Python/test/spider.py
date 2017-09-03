@@ -3,6 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def spider():
     num = 0
     r=requests.get('https://jandan.net/ooxx',verify=False)
