@@ -5,7 +5,6 @@ import threading
 import random
 import sys
 
-
 def ack_flood(target_ip,target_port=80):
     try:
         while True:
