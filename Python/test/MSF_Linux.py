@@ -4,7 +4,6 @@ import nmap
 import optparse
 import os
 
-exploit_list={'5666':cve_2013_1362}
 def scan_nmap(subnet,target_port):
     target_ip_list=[]
     try:
@@ -15,38 +14,40 @@ def scan_nmap(subnet,target_port):
             target_ip_list.append(target_ip)
         if target_ip_list==[]:
             print 'No targets!!!'
+            os._exit(0)
         return target_ip_list
     except:
         print 'sorry you scan false!!!'
 
 
-def cve_2013_1362(ConfigFile):
+def cve_2013_1362(ConfigFile,ip,port):
+    ConfigFile.write('use'+ip+':'+port+'\n')
+    #ConfigFile.write()
+    #ConfigFile.write()
+    #ConfigFile.write()
 
-
-def exploit_write(ConfigFile,ports):
-    for exploit in exploit_list:
-
-
-
+exploit_list={'5666':cve_2013_1362}
 
 def main():
     parser=optparse.OptionParser()
     parser.add_option('-n','--net',action='store',type='string',dest='nets')
     parser.add_option('-m','--mod',action='store',type='string',dest='mods')
-    parser.add_option('-p','--port',action='store',type='string',dest='ports')
+    parser.add_option('-p','--port',action='store',type='string',dest='port')
     (options,args)=parser.parse_args()
     subnets=options.nets
     mods=options.mods
-    ports=options.ports
+    port=options.port
     ConfigFile = open('meta.rc', 'a')
 
-    target_list=scan_nmap(subnets.ports)
+    target_list=scan_nmap(subnets,port)
     for ip in target_list:
-        exploit_write(ip,ports)
+        for exploit in exploit_list:
+            if  exploit == port:
+                exploit_list[port](ConfigFile,ip,port)
 
     ConfigFile.close()
 
-    os.system()
+    os.system('msfconsole -r meta.rc')
 
 
 if __name__ == '__main__':
