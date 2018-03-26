@@ -4,7 +4,15 @@ from scapy.all import *
 import threading
 import random
 import sys
+import nmap
 
+
+target_ip_list=[]
+def nmap_scan():
+    sub_nets=raw_input('')
+    n_scan=nmap.PortScanner()
+    n_scan.scan(hosts=)
+    target_ip_list.append()
 
 def ack_flood(target_ip,target_port=80):
     try:
